@@ -1,2 +1,1 @@
-# InterviewTaskExample
 # TestingProject
