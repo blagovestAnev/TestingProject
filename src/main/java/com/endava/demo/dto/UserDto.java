@@ -10,6 +10,7 @@ import javax.validation.constraints.Pattern;
 @Builder
 public class UserDto {
 
+    
     @NotNull
     private Long id;
 
