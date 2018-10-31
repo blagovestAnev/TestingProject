@@ -11,7 +11,6 @@ import javax.validation.constraints.Pattern;
 public class UserDto {
 
     @NotNull
-    @Pattern(regexp = "^[0-9]*$")
     private Long id;
 
     @NotNull
