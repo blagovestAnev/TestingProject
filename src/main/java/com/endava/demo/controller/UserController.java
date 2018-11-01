@@ -24,17 +24,17 @@ public class UserController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity createOrUpdateUser(@Valid @RequestBody UserDto userDto) {
-        return ResponseEntity.ok(userService.createOrUpdate(userDto));
+        return ResponseEntity.ok(this.userService.createOrUpdate(userDto));
     }
 
     @GetMapping(value = "/find/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity findUser(@PathVariable Long id) {
-        return userService.find(id).map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
+        return this.userService.find(id).map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
     }
 
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity deleteUser(@PathVariable Long id) {
-        userService.delete(id);
+        this.userService.delete(id);
         return ResponseEntity.ok().build();
     }
 }

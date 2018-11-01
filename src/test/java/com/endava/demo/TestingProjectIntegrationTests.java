@@ -3,6 +3,8 @@ package com.endava.demo;
 import com.endava.demo.config.TestContext;
 import com.endava.demo.controller.UserController;
 import com.endava.demo.dto.UserDto;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +20,35 @@ import static org.junit.Assert.*;
 public class TestingProjectIntegrationTests {
 
     private ResponseEntity entity;
+    private Long someNumber = 100L;
+
     private UserDto userDto = UserDto.builder()
-            .id(100L)
+            .id(someNumber)
             .loginName("testUser")
             .password("userPassword")
-            .firstName("just")
-            .lastName("user")
-            .role("using")
+            .firstName("the")
+            .lastName("first")
+            .role("template")
             .build();
 
     @Autowired
     private UserController userController;
+
+    @Before
+    public void setUp() {
+        ResponseEntity testEntity = this.userController.findUser(this.userDto.getId());
+        if (testEntity.getStatusCode() == HttpStatus.OK) {
+            this.userController.deleteUser(this.userDto.getId());
+        }
+    }
+
+    @After
+    public void clear() {
+        ResponseEntity testEntity = this.userController.findUser(this.userDto.getId());
+        if (testEntity.getStatusCode() == HttpStatus.OK) {
+            this.userController.deleteUser(this.userDto.getId());
+        }
+    }
 
     @Test
     public void createUser() {
@@ -42,16 +62,16 @@ public class TestingProjectIntegrationTests {
         this.userController.createOrUpdateUser(this.userDto);
         this.entity = this.userController.findUser(userDto.getId());
         assertEquals(entity.getStatusCode(), HttpStatus.OK);
-        UserDto userDto2 = UserDto.builder()
-                .id(100L)
-                .loginName("testUser2")
+        this.userDto = UserDto.builder()
+                .id(someNumber)
+                .loginName("testUser")
                 .password("userPassword")
-                .firstName("just")
-                .lastName("user")
-                .role("using")
+                .firstName("the")
+                .lastName("second")
+                .role("template")
                 .build();
-        this.entity = this.userController.createOrUpdateUser(userDto2);
-        assertTrue(entity.getBody().toString().contains("testUser2"));
+        this.entity = this.userController.createOrUpdateUser(this.userDto);
+        assertTrue(entity.getBody().toString().contains("second"));
         assertEquals(entity.getStatusCode(), HttpStatus.OK);
     }
 
