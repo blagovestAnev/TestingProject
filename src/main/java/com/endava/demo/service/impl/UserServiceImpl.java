@@ -24,21 +24,33 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto createOrUpdate(UserDto newUser) {
-        newUser.setPassword(BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt(4)));
-        return userAssembler.toDto(userRepository.save(userRepository.findById(newUser.getId()).orElse(userRepository.save(userAssembler.toEntity(newUser)))));
+
+        User dbUser = this.userRepository.findByIdNumber(newUser.getId());
+        if (dbUser!= null && (newUser.getId().equals(dbUser.getId()))) {
+            if (newUser.getLoginName().equals(dbUser.getLoginName()) && BCrypt.checkpw(newUser.getPassword(), dbUser.getPassword())) {
+                newUser.setPassword(dbUser.getPassword());
+                newUser = this.userAssembler.toDto(this.userRepository.save(this.userAssembler.toEntity(newUser)));
+                return newUser;
+            } else {
+                throw new IllegalArgumentException("Not correct username or password.");
+            }
+        }
+
+        newUser.setPassword(BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt()));
+        return this.userAssembler.toDto(this.userRepository.save(this.userAssembler.toEntity(newUser)));
     }
 
     @Override
     public Optional<UserDto> find(Long id) {
-        return userRepository.findById(id).map(userAssembler::toDto);
+        return this.userRepository.findById(id).map(this.userAssembler::toDto);
     }
 
     @Override
     public void delete(Long id) {
-        final Optional<User> user = userRepository.findById(id);
+        final Optional<User> user = this.userRepository.findById(id);
         if (!user.isPresent()) {
             throw new IllegalArgumentException("There is no user with this id.");
         }
-        userRepository.deleteById(id);
+        this.userRepository.deleteById(id);
     }
 }
