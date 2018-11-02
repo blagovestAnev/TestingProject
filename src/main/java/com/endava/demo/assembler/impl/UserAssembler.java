@@ -13,6 +13,7 @@ public class UserAssembler implements com.endava.demo.assembler.UserAssembler {
                 .id(user.getId())
                 .loginName(user.getLoginName())
                 .password(user.getPassword())
+                .salt(user.getSalt())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .role(user.getRole())
@@ -25,6 +26,7 @@ public class UserAssembler implements com.endava.demo.assembler.UserAssembler {
         user.setId(userDto.getId());
         user.setLoginName(userDto.getLoginName());
         user.setPassword(userDto.getPassword());
+        user.setSalt(userDto.getSalt());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setRole(userDto.getRole());

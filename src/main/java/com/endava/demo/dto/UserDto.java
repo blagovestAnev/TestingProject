@@ -21,6 +21,8 @@ public class UserDto {
     @Pattern(regexp = "^[a-zA-Z0-9 ,.'-]+$")
     private String password;
 
+    private int salt;
+
     @Pattern(regexp = "^[a-zA-Z0-9 ,.'-]+$")
     private String firstName;
 
