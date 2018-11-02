@@ -22,6 +22,9 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "pass_salt")
+    private int salt;
+
     @Column(name = "first_name")
     private String firstName;
 
