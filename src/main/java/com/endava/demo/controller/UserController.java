@@ -4,6 +4,7 @@ import com.endava.demo.dto.UserDto;
 import com.endava.demo.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class UserController {
                            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden."),
                            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found.")})
     @PutMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity createOrUpdateUser(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity createOrUpdateUser(@ApiParam(name = "userDto", value = "Represents the object values, based on which to create/store user.") @Valid @RequestBody UserDto userDto) {
         return ResponseEntity.ok(this.userService.createOrUpdate(userDto));
     }
 
@@ -44,7 +45,7 @@ public class UserController {
                            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
                            @ApiResponse(code = 500, message = "Returns information that \"user\" with this id don't exist in database.")})
     @GetMapping(value = "/find/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity findUser(@PathVariable Long id) {
+    public ResponseEntity findUser(@ApiParam(name = "id", value = "This is the searched object id number.") @PathVariable Long id) {
         return this.userService.find(id).map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
     }
 
@@ -54,7 +55,7 @@ public class UserController {
                            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden."),
                            @ApiResponse(code = 500, message = "Returns information that \"user\" with this id don't exist in database.")})
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity deleteUser(@PathVariable Long id) {
+    public ResponseEntity deleteUser(@ApiParam(name = "id", value = "This is the searched object id number.") @PathVariable Long id) {
         this.userService.delete(id);
         return ResponseEntity.ok().build();
     }
