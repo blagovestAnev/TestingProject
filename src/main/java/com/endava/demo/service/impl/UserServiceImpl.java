@@ -4,6 +4,7 @@ import com.endava.demo.assembler.impl.UserAssembler;
 import com.endava.demo.dto.UserDto;
 import com.endava.demo.entity.User;
 import com.endava.demo.repository.UserRepository;
+import com.endava.demo.service.EmailService;
 import com.endava.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final UserAssembler userAssembler;
     private int random = ThreadLocalRandom.current().nextInt(4, 20);
     private int randomNumber = random;
+    private final EmailService emailService;
 
     @Override
     @Transactional
@@ -34,6 +36,7 @@ public class UserServiceImpl implements UserService {
                 newUser.setPassword(dbUser.getPassword());
                 newUser.setSalt(dbUser.getSalt());
                 newUser = this.userAssembler.toDto(this.userRepository.save(this.userAssembler.toEntity(newUser)));
+                this.emailService.sendSimpleMessageUpdate(newUser.getEmail());
                 return newUser;
             } else {
                 throw new IllegalArgumentException("Not correct username or password.");
@@ -42,6 +45,7 @@ public class UserServiceImpl implements UserService {
 
         newUser.setPassword(BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt(this.randomNumber)));
         newUser.setSalt(this.randomNumber);
+        this.emailService.sendSimpleMessageCreate(newUser.getEmail());
         return this.userAssembler.toDto(this.userRepository.save(this.userAssembler.toEntity(newUser)));
     }
 

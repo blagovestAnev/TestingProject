@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -17,6 +18,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {TestContext.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class TestingProjectIntegrationTests {
 
     private ResponseEntity entity;
@@ -26,6 +28,7 @@ public class TestingProjectIntegrationTests {
             .id(someNumber)
             .loginName("testUser")
             .password("userPassword")
+            .email("134qewradsfzxcv1324adsfzxcv@qwer.bg")
             .firstName("the")
             .lastName("first")
             .role("template")
@@ -66,12 +69,13 @@ public class TestingProjectIntegrationTests {
                 .id(someNumber)
                 .loginName("testUser")
                 .password("userPassword")
+                .email("134qewradsfzxcv1324adsfzxcv@qwer.bg")
                 .firstName("the")
                 .lastName("second")
                 .role("template")
                 .build();
         this.entity = this.userController.createOrUpdateUser(this.userDto);
-        assertTrue(entity.getBody().toString().contains("second"));
+        assertTrue(this.entity.getBody().toString().contains("second"));
         assertEquals(entity.getStatusCode(), HttpStatus.OK);
     }
 

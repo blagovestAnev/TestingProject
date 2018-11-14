@@ -25,6 +25,11 @@ public class UserDto {
     @ApiModelProperty(notes = "User provided password.", required = true)
     private String password;
 
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+[.][a-zA-Z]{2,6}$")
+    @ApiModelProperty(notes = "User provided personal mail", required = true)
+    private String email;
+
     @ApiModelProperty(notes = "System generated additional element to enforce password.")
     private int salt;
 

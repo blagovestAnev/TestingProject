@@ -1,6 +1,5 @@
 package com.endava.demo.repository;
 
-import com.endava.demo.dto.UserDto;
 import com.endava.demo.entity.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
