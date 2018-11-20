@@ -11,8 +11,7 @@ import javax.validation.constraints.Pattern;
 @Builder
 public class UserDto {
 
-    @NotNull
-    @ApiModelProperty(notes = "User provided number.",required = true)
+    @ApiModelProperty(notes = "System generated number.")
     private Long id;
 
     @NotNull

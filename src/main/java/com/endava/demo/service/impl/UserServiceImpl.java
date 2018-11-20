@@ -11,10 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-
 import javax.transaction.Transactional;
 import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -22,44 +20,45 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserAssembler userAssembler;
-    private int random = ThreadLocalRandom.current().nextInt(4, 20);
-    private int randomNumber = random;
+    private final int minNumber = 4;
+    private final int maxNumber = 20;
     private final EmailService emailService;
 
     @Override
     @Transactional
     public UserDto createOrUpdate(UserDto newUser) {
-
-        User dbUser = this.userRepository.findByIdNumber(newUser.getId());
-        if (dbUser != null && newUser.getId().equals(dbUser.getId())) {
-            if (newUser.getLoginName().equals(dbUser.getLoginName()) && BCrypt.checkpw(newUser.getPassword(), dbUser.getPassword())) {
-                newUser.setPassword(dbUser.getPassword());
-                newUser.setSalt(dbUser.getSalt());
+        User dbUser = this.userRepository.findByLoginName(newUser.getLoginName());
+        if (dbUser != null) {
+            if (BCrypt.checkpw(newUser.getPassword(), dbUser.getPassword())) {
                 newUser = this.userAssembler.toDto(this.userRepository.save(this.userAssembler.toEntity(newUser)));
                 this.emailService.sendSimpleMessageUpdate(newUser.getEmail());
                 return newUser;
             } else {
-                throw new IllegalArgumentException("Not correct username or password.");
+                throw new IllegalArgumentException("Not correct password.");
             }
         }
-
-        newUser.setPassword(BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt(this.randomNumber)));
-        newUser.setSalt(this.randomNumber);
+        newUser.setSalt(getRandomNumber(this.minNumber, this.maxNumber));
+        newUser.setPassword(BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt(newUser.getSalt())));
         this.emailService.sendSimpleMessageCreate(newUser.getEmail());
         return this.userAssembler.toDto(this.userRepository.save(this.userAssembler.toEntity(newUser)));
     }
 
     @Override
-    public Optional<UserDto> find(Long id) {
-        return this.userRepository.findById(id).map(this.userAssembler::toDto);
+    public Optional<UserDto> find(String loginName) {
+        return this.userRepository.findById(loginName).map(this.userAssembler::toDto);
     }
 
     @Override
-    public void delete(Long id) {
-        final Optional<User> user = this.userRepository.findById(id);
+    public void delete(String loginName) {
+        final Optional<User> user = this.userRepository.findById(loginName);
         if (!user.isPresent()) {
             throw new IllegalArgumentException("There is no user with this id.");
         }
-        this.userRepository.deleteById(id);
+        this.userRepository.deleteById(loginName);
     }
+
+    private int getRandomNumber(int minNumber, int maxNumber) {
+        return (int) (Math.random() * ((maxNumber - minNumber) + 1)) + minNumber;
+    }
+
 }
