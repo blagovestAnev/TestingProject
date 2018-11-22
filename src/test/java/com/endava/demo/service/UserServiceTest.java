@@ -41,7 +41,7 @@ public class UserServiceTest {
     private final UserDto userDto = UserDto.builder()
             .loginName(this.loginName)
             .password(this.password)
-            .email("134qewradsfzxcv1324adsfzxcv@qwer.bg")
+            .email("134qewrxcv1324adsfzxcv@qwer.bg")
             .firstName("ivan")
             .lastName("ivanov")
             .role("role")
@@ -71,6 +71,7 @@ public class UserServiceTest {
         this.mockMvc.perform(delete(pathDelete + this.loginName)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -79,6 +80,7 @@ public class UserServiceTest {
         when(this.mockUserServiceImpl.createOrUpdate(this.userDto)).thenReturn(this.userDto);
         this.mockMvc.perform(put(this.pathCreateOrUpdate).content(mapper.writeValueAsBytes(this.userDto))
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andDo(print())
                 .andExpect(content().bytes(mapper.writeValueAsBytes(this.userDto)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk());
@@ -94,9 +96,11 @@ public class UserServiceTest {
                 .lastName("againFakeName")
                 .role("fakeRole")
                 .build();
+
         when(this.mockUserServiceImpl.createOrUpdate(this.userDto)).thenReturn(userDto2);
         this.mockMvc.perform(put(this.pathCreateOrUpdate).content(this.mapper.writeValueAsBytes(this.userDto))
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andDo(print())
                 .andExpect(content().bytes(this.mapper.writeValueAsBytes(userDto2)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk());

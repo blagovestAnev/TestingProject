@@ -28,7 +28,7 @@ public class TestingProjectIntegrationTests {
     private UserDto userDto = UserDto.builder()
             .loginName(this.loginName)
             .password(this.password)
-            .email("134qewradsfzxcv1324adsfzxcv@qwer.bg")
+            .email("134qdsfzxcv1324adsfzxcv@qwer.bg")
             .firstName("the")
             .lastName("first")
             .role("template")

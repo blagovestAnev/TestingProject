@@ -29,14 +29,17 @@ public class UserServiceImpl implements UserService {
     public UserDto createOrUpdate(UserDto newUser) {
         User dbUser = this.userRepository.findByLoginName(newUser.getLoginName());
         if (dbUser != null) {
+            newUser.setId(dbUser.getId());
+            newUser.setSalt(dbUser.getSalt());
             if (BCrypt.checkpw(newUser.getPassword(), dbUser.getPassword())) {
-                newUser = this.userAssembler.toDto(this.userRepository.save(this.userAssembler.toEntity(newUser)));
+                newUser.setPassword(dbUser.getPassword());
                 this.emailService.sendSimpleMessageUpdate(newUser.getEmail());
-                return newUser;
+                return this.userAssembler.toDto(this.userRepository.save(this.userAssembler.toEntity(newUser)));
             } else {
                 throw new IllegalArgumentException("Not correct password.");
             }
         }
+        newUser.setId(getNewIdNumber());
         newUser.setSalt(getRandomNumber(this.minNumber, this.maxNumber));
         newUser.setPassword(BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt(newUser.getSalt())));
         this.emailService.sendSimpleMessageCreate(newUser.getEmail());
@@ -57,8 +60,15 @@ public class UserServiceImpl implements UserService {
         this.userRepository.deleteById(loginName);
     }
 
+    private Long getNewIdNumber() {
+        Long maxNumber = this.userRepository.findLastUserId();
+        if (maxNumber == null) {
+            return 1L;
+        }
+        return maxNumber + 1;
+    }
+
     private int getRandomNumber(int minNumber, int maxNumber) {
         return (int) (Math.random() * ((maxNumber - minNumber) + 1)) + minNumber;
     }
-
 }

@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
 @Builder
 public class UserDto {
 
-    @ApiModelProperty(notes = "System generated number.")
+    @ApiModelProperty(notes = "System generated unique number.")
     private Long id;
 
     @NotNull
@@ -26,7 +26,7 @@ public class UserDto {
 
     @NotNull
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+[.][a-zA-Z]{2,6}$")
-    @ApiModelProperty(notes = "User provided personal mail", required = true)
+    @ApiModelProperty(notes = "User provided personal mail.", required = true)
     private String email;
 
     @ApiModelProperty(notes = "System generated additional element to enforce password.")

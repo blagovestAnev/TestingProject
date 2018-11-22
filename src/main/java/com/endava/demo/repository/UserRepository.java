@@ -14,4 +14,8 @@ public interface UserRepository extends CrudRepository<User, String> {
             "where user.loginName=:loginName ")
     User findByLoginName(@Param("loginName") String loginName);
 
+    @Query("select MAX(user.id) " +
+            "from User user ")
+    Long findLastUserId();
+
 }
