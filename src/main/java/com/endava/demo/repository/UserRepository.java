@@ -7,11 +7,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends CrudRepository<User, String> {
 
     @Query("select user " +
             "from User user " +
-            "where user.id=:number ")
-    User findByIdNumber(@Param("number") Long number);
+            "where user.loginName=:loginName ")
+    User findByLoginName(@Param("loginName") String loginName);
+
+    @Query("select MAX(user.id) " +
+            "from User user ")
+    Long findLastUserId();
 
 }

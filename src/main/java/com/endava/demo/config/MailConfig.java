@@ -18,6 +18,8 @@ public class MailConfig {
     private String textCreate;
     private String subjectUpdate;
     private String textUpdate;
+    private String subjectDelete;
+    private String textDelete;
 
     @Bean
     public JavaMailSender emailSender() {

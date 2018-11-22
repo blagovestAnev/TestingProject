@@ -28,7 +28,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @ApiOperation(value = "Updates \"user\" information based on \"id\",\"login name\" and \"password\". If such don't exist, the app will create a new one.")
+    @ApiOperation(value = "Updates \"user\" information based on \"login name\" and \"password\". If such don't exist, the app will create a new one.")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Returns \"OK\" response when successful update/create operation has been performed."),
                            @ApiResponse(code = 401, message = "You are not authorized to view the resource."),
                            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden."),
@@ -38,25 +38,25 @@ public class UserController {
         return ResponseEntity.ok(this.userService.createOrUpdate(userDto));
     }
 
-    @ApiOperation(value = "Return information for \"user\", based on \"id\".")
+    @ApiOperation(value = "Return information for \"user\", based on \"login name\".")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Returns user information, based on \"id\" with OK response."),
                            @ApiResponse(code = 204, message = "Returns \"No content\" message, when user with this \"id\" is not found."),
                            @ApiResponse(code = 401, message = "You are not authorized to view the resource."),
                            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
                            @ApiResponse(code = 500, message = "Returns information that \"user\" with this id don't exist in database.")})
-    @GetMapping(value = "/find/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity findUser(@ApiParam(name = "id", value = "This is the searched object id number.") @PathVariable Long id) {
-        return this.userService.find(id).map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
+    @GetMapping(value = "/find/{loginName}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity findUser(@ApiParam(name = "loginName", value = "This is the searched object login name.") @PathVariable String loginName) {
+        return this.userService.find(loginName).map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
     }
 
-    @ApiOperation(value = "Deletes \"user\", based on \"id\".")
+    @ApiOperation(value = "Deletes \"user\", based on \"login name\".")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Returns \"OK\" response when the \"user\" has been found and deleted."),
                            @ApiResponse(code = 401, message = "You are not authorized to view the resource."),
                            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden."),
                            @ApiResponse(code = 500, message = "Returns information that \"user\" with this id don't exist in database.")})
-    @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity deleteUser(@ApiParam(name = "id", value = "This is the searched object id number.") @PathVariable Long id) {
-        this.userService.delete(id);
+    @DeleteMapping(value = "/delete/{loginName}")
+    public ResponseEntity deleteUser(@ApiParam(name = "loginName", value = "This is the searched object login name.") @PathVariable String loginName) {
+        this.userService.delete(loginName);
         return ResponseEntity.ok().build();
     }
 }

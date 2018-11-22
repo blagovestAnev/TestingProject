@@ -22,13 +22,13 @@ import static org.junit.Assert.*;
 public class TestingProjectIntegrationTests {
 
     private ResponseEntity entity;
-    private Long someNumber = 100L;
+    private String loginName = "testUser";
+    private String password = "pass1234";
 
     private UserDto userDto = UserDto.builder()
-            .id(someNumber)
-            .loginName("testUser")
-            .password("userPassword")
-            .email("134qewradsfzxcv1324adsfzxcv@qwer.bg")
+            .loginName(this.loginName)
+            .password(this.password)
+            .email("134qdsfzxcv1324adsfzxcv@qwer.bg")
             .firstName("the")
             .lastName("first")
             .role("template")
@@ -39,36 +39,34 @@ public class TestingProjectIntegrationTests {
 
     @Before
     public void setUp() {
-        ResponseEntity testEntity = this.userController.findUser(this.userDto.getId());
+        ResponseEntity testEntity = this.userController.findUser(this.userDto.getLoginName());
         if (testEntity.getStatusCode() == HttpStatus.OK) {
-            this.userController.deleteUser(this.userDto.getId());
+            this.userController.deleteUser(this.userDto.getLoginName());
         }
     }
 
     @After
     public void clear() {
-        ResponseEntity testEntity = this.userController.findUser(this.userDto.getId());
+        ResponseEntity testEntity = this.userController.findUser(this.userDto.getLoginName());
         if (testEntity.getStatusCode() == HttpStatus.OK) {
-            this.userController.deleteUser(this.userDto.getId());
+            this.userController.deleteUser(this.userDto.getLoginName());
         }
     }
 
     @Test
     public void createUser() {
-        this.userController.createOrUpdateUser(this.userDto);
-        this.entity = this.userController.findUser(this.userDto.getId());
+        this.entity = this.userController.createOrUpdateUser(this.userDto);
         assertEquals(this.entity.getStatusCode(), HttpStatus.OK);
     }
 
     @Test
     public void updateUser() {
         this.userController.createOrUpdateUser(this.userDto);
-        this.entity = this.userController.findUser(userDto.getId());
+        this.entity = this.userController.findUser(this.userDto.getLoginName());
         assertEquals(entity.getStatusCode(), HttpStatus.OK);
         this.userDto = UserDto.builder()
-                .id(someNumber)
-                .loginName("testUser")
-                .password("userPassword")
+                .loginName(this.loginName)
+                .password(this.password)
                 .email("134qewradsfzxcv1324adsfzxcv@qwer.bg")
                 .firstName("the")
                 .lastName("second")
@@ -81,8 +79,8 @@ public class TestingProjectIntegrationTests {
 
     @Test
     public void findUser() {
-        this.entity = this.userController.createOrUpdateUser(userDto);
-        this.entity = this.userController.findUser(userDto.getId());
+        this.entity = this.userController.createOrUpdateUser(this.userDto);
+        this.entity = this.userController.findUser(this.userDto.getLoginName());
         assertEquals(this.entity.getStatusCode(), HttpStatus.OK);
     }
 
@@ -90,14 +88,14 @@ public class TestingProjectIntegrationTests {
     public void deleteUser() {
         this.entity = this.userController.createOrUpdateUser(this.userDto);
         assertEquals(entity.getStatusCode(), HttpStatus.OK);
-        this.entity = this.userController.deleteUser(this.userDto.getId());
+        this.entity = this.userController.deleteUser(this.userDto.getLoginName());
         assertEquals(entity.getStatusCode(), HttpStatus.OK);
     }
 
     @Test
     public void throwExceptionIfNoSuchUserIdExist() {
         try {
-            this.userController.deleteUser(this.userDto.getId());
+            this.userController.deleteUser(this.userDto.getLoginName());
         } catch (IllegalArgumentException e) {
             assertNotNull(e.getMessage());
         }

@@ -32,16 +32,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserServiceTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
-    private final Long userId = 5L;
+    private final String loginName = "testingLoginName";
+    private final String password = "pass1234";
     private final String pathFind = "/user/find/";
     private final String pathDelete = "/user/delete/";
     private final String pathCreateOrUpdate = "/user/";
-    private final ImmutableSet set = ImmutableSet.of(1L, 2L, 3L, 4L, 5L);
+    private final ImmutableSet set = ImmutableSet.of("testingLoginName", "testing2", "testing3", "testing4", "testing5");
     private final UserDto userDto = UserDto.builder()
-            .id(userId)
-            .loginName("testing")
-            .password("pass")
-            .email("134qewradsfzxcv1324adsfzxcv@qwer.bg")
+            .loginName(this.loginName)
+            .password(this.password)
+            .email("134qewrxcv1324adsfzxcv@qwer.bg")
             .firstName("ivan")
             .lastName("ivanov")
             .role("role")
@@ -56,21 +56,22 @@ public class UserServiceTest {
     @Test
     public void noContentWhenDontFindUser() throws Exception {
         when(this.mockUserServiceImpl.find(any())).thenReturn(Optional.empty());
-        this.mockMvc.perform(get(pathFind + userId)).andExpect(status().isNoContent());
+        this.mockMvc.perform(get(pathFind + this.loginName)).andExpect(status().isNoContent());
     }
 
     @Test
     public void okWhenFindUser() throws Exception {
-        when(this.mockUserServiceImpl.find(userId)).thenReturn(Optional.ofNullable(userDto));
-        this.mockMvc.perform(get(pathFind + userId)).andExpect(status().isOk());
+        when(this.mockUserServiceImpl.find(this.loginName)).thenReturn(Optional.ofNullable(this.userDto));
+        this.mockMvc.perform(get(pathFind + this.loginName)).andExpect(status().isOk());
     }
 
     @Test
     public void okWhenFindUserAndDelete() throws Exception {
-        assertTrue(set.contains(userId));
-        this.mockMvc.perform(delete(pathDelete + userId)
+        assertTrue(set.contains(this.loginName));
+        this.mockMvc.perform(delete(pathDelete + this.loginName)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -79,6 +80,7 @@ public class UserServiceTest {
         when(this.mockUserServiceImpl.createOrUpdate(this.userDto)).thenReturn(this.userDto);
         this.mockMvc.perform(put(this.pathCreateOrUpdate).content(mapper.writeValueAsBytes(this.userDto))
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andDo(print())
                 .andExpect(content().bytes(mapper.writeValueAsBytes(this.userDto)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk());
@@ -87,17 +89,18 @@ public class UserServiceTest {
     @Test
     public void okWhenUpdateUser() throws Exception {
         UserDto userDto2 = UserDto.builder()
-                .id(this.userDto.getId())
-                .loginName("some")
-                .password("newPass")
+                .loginName(this.loginName)
+                .password(this.password)
                 .email("134qewradsfzxcv1324addsfzxcv@qwer.bg")
                 .firstName("fakeName")
                 .lastName("againFakeName")
                 .role("fakeRole")
                 .build();
+
         when(this.mockUserServiceImpl.createOrUpdate(this.userDto)).thenReturn(userDto2);
         this.mockMvc.perform(put(this.pathCreateOrUpdate).content(this.mapper.writeValueAsBytes(this.userDto))
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andDo(print())
                 .andExpect(content().bytes(this.mapper.writeValueAsBytes(userDto2)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk());
