@@ -2,6 +2,7 @@ package com.endava.demo.service.impl;
 
 import com.endava.demo.config.MailConfig;
 import com.endava.demo.service.EmailService;
+import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -19,7 +20,7 @@ public class EmailServiceImpl implements EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject(this.mailConfig.getSubjectCreate());
-        message.setText(this.mailConfig.getTextCreate() + "");
+        message.setText(Strings.nullToEmpty(this.mailConfig.getTextCreate()));
         emailSender.send(message);
     }
 
@@ -27,7 +28,17 @@ public class EmailServiceImpl implements EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject(this.mailConfig.getSubjectUpdate());
-        message.setText(this.mailConfig.getTextUpdate() + "");
+        message.setText(Strings.nullToEmpty(this.mailConfig.getTextUpdate()));
         emailSender.send(message);
     }
+
+    @Override
+    public void sendSimpleMessageDelete(String to) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(this.mailConfig.getSubjectDelete());
+        message.setText(Strings.nullToEmpty(this.mailConfig.getTextDelete()));
+        emailSender.send(message);
+    }
+
 }
