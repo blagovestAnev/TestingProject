@@ -6,4 +6,6 @@ public interface EmailService {
 
     void sendSimpleMessageCreate(String to);
 
+    void sendSimpleMessageDelete(String to);
+
 }

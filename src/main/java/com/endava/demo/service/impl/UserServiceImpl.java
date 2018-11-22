@@ -57,6 +57,7 @@ public class UserServiceImpl implements UserService {
         if (!user.isPresent()) {
             throw new IllegalArgumentException("There is no user with this id.");
         }
+        this.emailService.sendSimpleMessageDelete(user.map(User::getEmail).orElse(null));
         this.userRepository.deleteById(loginName);
     }
 
