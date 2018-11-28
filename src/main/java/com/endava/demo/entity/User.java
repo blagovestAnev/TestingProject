@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = "users")
 public class User {
 
-    @Column(name = "id")
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @Id
@@ -22,10 +22,10 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column (name = "email",nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "pass_salt")
+    @Column(name = "pass_salt", nullable = false)
     private int salt;
 
     @Column(name = "first_name")
