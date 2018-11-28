@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="initial users table" author="Blagovest Anev">
+        <createTable tableName="users" remarks="A table containing all the users">
+            <column name="id" type="int">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="login_name" type="varchar(255)">
+                <constraints primaryKey="true" unique="true" nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pass_salt" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(255)"/>
+            <column name="last_name" type="varchar(255)"/>
+            <column name="role" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="populate some data" author="Blagovest Anev">
+        <insert tableName="users">
+            <column name="id">1</column>
+            <column name="login_name">james</column>
+            <column name="password">$2a$10$ikIdQaQ1wk6/fwnbY4JP2uUjV/gLly/MbNCDspC1hzoZGFCd1/8F.</column>
+            <column name="email">jamesJameson@yahoo.com</column>
+            <column name="pass_salt">10</column>
+            <column name="first_name">James</column>
+            <column name="last_name">Petrov</column>
+            <column name="role">Warehouse Supervisor</column>
+        </insert>
+        <insert tableName="users">
+        <column name="id">2</column>
+        <column name="login_name">thomas</column>
+        <column name="password">$2a$10$EqXw9OrGt5ML2L8BV4VvJ.TGH3h078Wpk85qP8rl2F7o8US7UHOni</column>
+        <column name="email">thomasThomason@yahoo.com</column>
+        <column name="pass_salt">10</column>
+        <column name="first_name">Thomas</column>
+        <column name="last_name">Thomason</column>
+        <column name="role">CEO</column>
+    </insert>
+        <insert tableName="users">
+            <column name="id">3</column>
+            <column name="login_name">ivan</column>
+            <column name="password">$2a$04$D7drxwJPCXjBPzGmTNEJuO.rLX7FLgicGIruAhatV2QNOHlbCzzyq</column>
+            <column name="email">ivanIvanov@gmail.com</column>
+            <column name="pass_salt">4</column>
+            <column name="first_name">Ivan</column>
+            <column name="last_name">Ivanov</column>
+            <column name="role">CTO</column>
+        </insert>
+        <insert tableName="users">
+            <column name="id">4</column>
+            <column name="login_name">hsjk5j63436</column>
+            <column name="password">$2a$06$vItr6tMiR/296NB68uCI5ey8nwLw0Jpf4kxPOe8L1Lq4fCvtilvd2</column>
+            <column name="email">lionavenger@abv.bg</column>
+            <column name="pass_salt">6</column>
+            <column name="first_name">Todor15</column>
+            <column name="last_name">asdfadsfadadsfsdfasdfsf</column>
+            <column name="role">HR Specialis</column>
+        </insert>
+        <insert tableName="users">
+            <column name="id">5</column>
+            <column name="login_name">qwer</column>
+            <column name="password">$2a$04$by3eqOYQMCVnOZFOvCLMceqpsjtyZSBlYphvSHIQYscp1WFqjVPpe</column>
+            <column name="email">qwerQwerty@gmail.com</column>
+            <column name="pass_salt">4</column>
+            <column name="first_name">Qwer</column>
+            <column name="last_name">Qwerty</column>
+            <column name="role">PA</column>
+        </insert>
+        <insert tableName="users">
+            <column name="id">6</column>
+            <column name="login_name">sfdgsdfgs</column>
+            <column name="password">$2a$10$ZSSXuQkCec3yH2KJN0QXM.MSJJTXJWxYY9a1O5lpYjZecHqoMO5TO</column>
+            <column name="email">smithAllan@gmail.com</column>
+            <column name="pass_salt">10</column>
+            <column name="first_name">Smith</column>
+            <column name="last_name">Allan</column>
+            <column name="role">Driver</column>
+        </insert>
+        <insert tableName="users">
+            <column name="id">7</column>
+            <column name="login_name">arnhargbarbna</column>
+            <column name="password">$2a$06$oahCLc3DfwJIrOXzS3a.HuIXkBopgqPy99Dd4siUvl8pkBN/nB5Da</column>
+            <column name="email">rosRoss@abv.bg</column>
+            <column name="pass_salt">6</column>
+            <column name="first_name">Ros</column>
+            <column name="last_name">Ross</column>
+            <column name="role">Temp Accountant</column>
+        </insert>
+        <insert tableName="users">
+            <column name="id">8</column>
+            <column name="login_name">asdfarfg</column>
+            <column name="password">$2a$14$E/bd1fcD2WKwZd2ICIlaouM1nWmef2HusKG5BGEQKZuUAwcwgMQdu</column>
+            <column name="email">asdfarAsdfar@abv.bg</column>
+            <column name="pass_salt">14</column>
+            <column name="first_name">Asdfar</column>
+            <column name="last_name">Asdfar</column>
+            <column name="role">Chief Accountant</column>
+        </insert>
+        <insert tableName="users">
+            <column name="id">9</column>
+            <column name="login_name">hero</column>
+            <column name="password">$2a$06$Hx5oYMR6.H/ia5ACeGUhu.0ztLwssqoJo3MS82mUopl3UUSyAdBl6</column>
+            <column name="email">lionavenger@abv.bg</column>
+            <column name="pass_salt">6</column>
+            <column name="first_name">Todor</column>
+            <column name="last_name">Hristovv</column>
+            <column name="role">HR</column>
+        </insert>
+        <insert tableName="users">
+            <column name="id">10</column>
+            <column name="login_name">hsjk5j66</column>
+            <column name="password">$2a$09$hY9B/jGt.Q9WGOpI4LuY1.bCERPUWtpMZ7.XRNzvu5uAAYtr6bkvG</column>
+            <column name="email">lionavenger@abv.bg</column>
+            <column name="pass_salt">9</column>
+            <column name="first_name">Todor15</column>
+            <column name="last_name">asdfasdf</column>
+            <column name="role">HR Specialis</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
