@@ -1,14 +1,18 @@
 package com.endava.demo.dto;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
 
     @ApiModelProperty(notes = "System generated unique number.")

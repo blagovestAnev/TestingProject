@@ -1,8 +1,8 @@
 package com.endava.demo.service.impl;
 
-import com.endava.demo.assembler.impl.UserAssembler;
 import com.endava.demo.dto.UserDto;
 import com.endava.demo.entity.User;
+import com.endava.demo.mapper.UserMapper;
 import com.endava.demo.repository.UserRepository;
 import com.endava.demo.service.EmailService;
 import com.endava.demo.service.UserService;
@@ -19,10 +19,10 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserAssembler userAssembler;
     private final int minNumber = 4;
     private final int maxNumber = 20;
     private final EmailService emailService;
+    private final UserMapper userMapper;
 
     @Override
     @Transactional
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
             if (BCrypt.checkpw(newUser.getPassword(), dbUser.getPassword())) {
                 newUser.setPassword(dbUser.getPassword());
                 this.emailService.sendSimpleMessageUpdate(newUser.getEmail());
-                return this.userAssembler.toDto(this.userRepository.save(this.userAssembler.toEntity(newUser)));
+                return this.userMapper.toDto(this.userRepository.save(this.userMapper.toEntity(newUser)));
             } else {
                 throw new IllegalArgumentException("Not correct password.");
             }
@@ -43,12 +43,12 @@ public class UserServiceImpl implements UserService {
         newUser.setSalt(getRandomNumber(this.minNumber, this.maxNumber));
         newUser.setPassword(BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt(newUser.getSalt())));
         this.emailService.sendSimpleMessageCreate(newUser.getEmail());
-        return this.userAssembler.toDto(this.userRepository.save(this.userAssembler.toEntity(newUser)));
+        return this.userMapper.toDto(this.userRepository.save(this.userMapper.toEntity(newUser)));
     }
 
     @Override
     public Optional<UserDto> find(String loginName) {
-        return this.userRepository.findById(loginName).map(this.userAssembler::toDto);
+        return this.userRepository.findById(loginName).map(this.userMapper::toDto);
     }
 
     @Override
