@@ -39,12 +39,13 @@ public class UserServiceImpl implements UserService {
                 throw new IllegalArgumentException("Not correct password.");
             }
         }
-        newUser.setId(getNewIdNumber());
+        newUser.setId(getNextIdNumber());
         newUser.setSalt(getRandomNumber(this.minNumber, this.maxNumber));
         newUser.setPassword(BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt(newUser.getSalt())));
         this.emailService.sendSimpleMessageCreate(newUser.getEmail());
         return this.userMapper.toDto(this.userRepository.save(this.userMapper.toEntity(newUser)));
     }
+
 
     @Override
     public Optional<UserDto> find(String loginName) {
@@ -61,7 +62,15 @@ public class UserServiceImpl implements UserService {
         this.userRepository.deleteById(loginName);
     }
 
-    private Long getNewIdNumber() {
+    /**
+     * Finds the next id number in the database.
+     * Returns the next number in the database from the user table, checking for any user existence. It finds the highest user id number
+     * and adds 1 to his number to get the next available. If don't find any user, returns just 1, which means that the database is
+     * empty and this user will be the first one.
+     *
+     * @return the next id number or just 1
+     */
+    private Long getNextIdNumber() {
         Long maxNumber = this.userRepository.findLastUserId();
         if (maxNumber == null) {
             return 1L;
@@ -69,6 +78,14 @@ public class UserServiceImpl implements UserService {
         return maxNumber + 1;
     }
 
+    /**
+     * Returns random number between minimum and maximum, used for the salt in BCrypt.
+     *
+     * @param minNumber minimum number (can't be less than 4, because of salt specifications)
+     * @param maxNumber maximum number (can't be higher than 31, because of salt specifications - recommended until 20,
+     *                  because password comparison becomes too slow)
+     * @return random integer number
+     */
     private int getRandomNumber(int minNumber, int maxNumber) {
         return (int) (Math.random() * ((maxNumber - minNumber) + 1)) + minNumber;
     }
