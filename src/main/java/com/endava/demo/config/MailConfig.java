@@ -21,6 +21,11 @@ public class MailConfig {
     private String subjectDelete;
     private String textDelete;
 
+    /**
+     * Setup the settings, based on which, the actions confirmation mail is going to be sent towards the clients.
+     *
+     * @return mailSender settings for the mail, from which the mail is going to be send
+     */
     @Bean
     public JavaMailSender emailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

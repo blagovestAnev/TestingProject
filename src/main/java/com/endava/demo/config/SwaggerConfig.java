@@ -22,6 +22,11 @@ public class SwaggerConfig {
 
     private final static String API_BASE_PACKAGE = "com.endava.demo.controller";
 
+    /**
+     * Created the bean, carrying swagger setup settings.
+     *
+     * @return Docket with all the settings in it
+     */
     @Bean
     public Docket userApi() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -33,8 +38,12 @@ public class SwaggerConfig {
                 .build();
     }
 
-    //API base information
-
+    /**
+     * API base information.
+     * Adds additional information to the swagger.
+     *
+     * @return ApiInfoBuilder object, containing additional information for the documentation
+     */
     private ApiInfo metaData() {
         return new ApiInfoBuilder()
                 .title("Spring Boot REST API")

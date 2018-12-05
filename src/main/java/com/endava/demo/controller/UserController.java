@@ -23,7 +23,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
-@Api(description = "Contains operations for operations with the user-data.")
+@Api(description = "Contains operations with the user-data.")
 public class UserController {
 
     private final UserService userService;
