@@ -43,7 +43,8 @@ public class UserController {
                            @ApiResponse(code = 204, message = "Returns \"No content\" message, when user with this \"id\" is not found."),
                            @ApiResponse(code = 401, message = "You are not authorized to view the resource."),
                            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-                           @ApiResponse(code = 500, message = "Returns information that \"user\" with this id don't exist in database.")})
+                           @ApiResponse(code = 404, message = "The resource you were trying to reach is not found."),
+                           @ApiResponse(code = 500, message = "Returns information that \"user\" with this \"login name\" don't exist in database.")})
     @GetMapping(value = "/find/{loginName}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity findUser(@ApiParam(name = "loginName", value = "This is the searched object login name.") @PathVariable String loginName) {
         return this.userService.find(loginName).map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
@@ -53,7 +54,7 @@ public class UserController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Returns \"OK\" response when the \"user\" has been found and deleted."),
                            @ApiResponse(code = 401, message = "You are not authorized to view the resource."),
                            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden."),
-                           @ApiResponse(code = 500, message = "Returns information that \"user\" with this id don't exist in database.")})
+                           @ApiResponse(code = 500, message = "Returns information that \"user\" with this \"login name\" don't exist in database.")})
     @DeleteMapping(value = "/delete/{loginName}")
     public ResponseEntity deleteUser(@ApiParam(name = "loginName", value = "This is the searched object login name.") @PathVariable String loginName) {
         this.userService.delete(loginName);
