@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%blue{[%-5level]} %green{%d{yyyy-MM-dd HH:mm:ss}} %cyan{%l} - %msg%n"/>
+        </Console>
+        <File name="MyFile" fileName="src/main/resources/log/all.log" immediateFlush="false" append="true">
+            <PatternLayout pattern="%blue{[%-5level]} %green{%d{yyyy-MM-dd HH:mm:ss}} %cyan{%l} - %msg%n"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <root level="debug">
+            <appender-ref ref="Console" level="info"/>
+            <appender-ref ref="MyFile" level="warn"/>
+        </root>
+    </Loggers>
+</Configuration>
