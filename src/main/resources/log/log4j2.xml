@@ -4,14 +4,29 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%blue{[%-5level]} %green{%d{yyyy-MM-dd HH:mm:ss}} %cyan{%l} - %msg%n"/>
         </Console>
-        <File name="MyFile" fileName="src/main/resources/log/all.log" immediateFlush="false" append="true">
-            <PatternLayout pattern="%blue{[%-5level]} %green{%d{yyyy-MM-dd HH:mm:ss}} %cyan{%l} - %msg%n"/>
-        </File>
+        <RollingFile name="RollingFile" fileName="src/main/resources/log/logHistory/app.log" filePattern="src/main/resources/log/logHistory/app.log.%i">
+            <PatternLayout>
+                <Pattern> %blue{[%-5level]} %green{%d{yyyy-MM-dd HH:mm:ss}} %cyan{%l} - %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1000 kb"/>
+            </Policies>
+            <DefaultRolloverStrategy max="50">
+                <Delete basePath="src/main/resources/log/logHistory/" maxDepth="1">
+                    <IfAll>
+                        <!-- Looks for file names starting with app*.log*. Any file including app.log.1 will satisfy this condition. Could delete current log app.log -->
+                        <IfFileName glob="app*.log*"/>
+                        <!-- Looks for files that are older than 5 days -->
+                        <IfLastModified age="3d"/>
+                    </IfAll>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
     </Appenders>
     <Loggers>
-        <root level="debug">
-            <appender-ref ref="Console" level="info"/>
-            <appender-ref ref="MyFile" level="warn"/>
-        </root>
+        <Root level="debug">
+            <AppenderRef ref="Console" level="info"/>
+            <AppenderRef ref="RollingFile" level="debug"/>
+        </Root>
     </Loggers>
 </Configuration>
