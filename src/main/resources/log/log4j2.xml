@@ -16,7 +16,7 @@
                     <IfAll>
                         <!-- Looks for file names starting with app*.log*. Any file including app.log.1 will satisfy this condition. Could delete current log app.log -->
                         <IfFileName glob="app*.log*"/>
-                        <!-- Looks for files that are older than 5 days -->
+                        <!-- Looks for files that are older than 3 days -->
                         <IfLastModified age="3d"/>
                     </IfAll>
                 </Delete>

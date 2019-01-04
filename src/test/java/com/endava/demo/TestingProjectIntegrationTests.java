@@ -38,7 +38,7 @@ public class TestingProjectIntegrationTests {
     private UserController userController;
 
     @Before
-    public void setUp() {
+    public void setUp() throws InterruptedException {
         ResponseEntity testEntity = this.userController.findUser(this.userDto.getLoginName());
         if (testEntity.getStatusCode() == HttpStatus.OK) {
             this.userController.deleteUser(this.userDto.getLoginName());
@@ -46,7 +46,7 @@ public class TestingProjectIntegrationTests {
     }
 
     @After
-    public void clear() {
+    public void clear() throws InterruptedException {
         ResponseEntity testEntity = this.userController.findUser(this.userDto.getLoginName());
         if (testEntity.getStatusCode() == HttpStatus.OK) {
             this.userController.deleteUser(this.userDto.getLoginName());
@@ -60,7 +60,7 @@ public class TestingProjectIntegrationTests {
     }
 
     @Test
-    public void updateUser() {
+    public void updateUser() throws InterruptedException {
         this.userController.createOrUpdateUser(this.userDto);
         this.entity = this.userController.findUser(this.userDto.getLoginName());
         assertEquals(entity.getStatusCode(), HttpStatus.OK);
@@ -78,7 +78,7 @@ public class TestingProjectIntegrationTests {
     }
 
     @Test
-    public void findUser() {
+    public void findUser() throws InterruptedException {
         this.entity = this.userController.createOrUpdateUser(this.userDto);
         this.entity = this.userController.findUser(this.userDto.getLoginName());
         assertEquals(this.entity.getStatusCode(), HttpStatus.OK);
