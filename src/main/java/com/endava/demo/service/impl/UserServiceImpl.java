@@ -19,8 +19,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final int minNumber = 4;
-    private final int maxNumber = 20;
+    private static final int MIN_NUMBER = 4;
+    private static final int MAX_NUMBER = 20;
     private final EmailService emailService;
     private final UserMapper userMapper;
 
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
             }
         }
         newUser.setId(getNextIdNumber());
-        newUser.setSalt(getRandomNumber(this.minNumber, this.maxNumber));
+        newUser.setSalt(getRandomNumber());
         newUser.setPassword(BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt(newUser.getSalt())));
         this.emailService.sendSimpleMessageCreate(newUser.getEmail());
         return this.userMapper.toDto(this.userRepository.save(this.userMapper.toEntity(newUser)));
@@ -64,9 +64,9 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Finds the next id number in the database.
-     * Returns the next number in the database from the user table, checking for any user existence. It finds the highest user id number
-     * and adds 1 to his number to get the next available. If don't find any user, returns just 1, which means that the database is
-     * empty and this user will be the first one.
+     * Returns the next number in the database from the user table, checking for any user existence. It finds the
+     * highest user id number and adds 1 to his number to get the next available. If don't find any user, returns just
+     * 1, which means that the database is empty and this user will be the first one.
      *
      * @return the next id number or just 1
      */
@@ -79,14 +79,13 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Returns random number between minimum and maximum, used for the salt in BCrypt.
+     * Returns random number between minimum (can't be less than 4, because of salt specifications) and maximum
+     * (can't be higher than 31, because of salt specifications - recommended until 20,
+     * because password comparison becomes too slow), used for the salt in BCrypt.
      *
-     * @param minNumber minimum number (can't be less than 4, because of salt specifications)
-     * @param maxNumber maximum number (can't be higher than 31, because of salt specifications - recommended until 20,
-     *                  because password comparison becomes too slow)
      * @return random integer number
      */
-    private int getRandomNumber(int minNumber, int maxNumber) {
-        return (int) (Math.random() * ((maxNumber - minNumber) + 1)) + minNumber;
+    private int getRandomNumber() {
+        return (int) (Math.random() * ((MAX_NUMBER - MIN_NUMBER) + 1)) + MIN_NUMBER;
     }
 }
