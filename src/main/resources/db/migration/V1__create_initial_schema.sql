@@ -1,0 +1,1 @@
+CREATE TABLE users(id BIGINT NOT NULL UNIQUE, login_name VARCHAR(255) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, pass_salt INT NOT NULL, first_name VARCHAR(255), last_name VARCHAR(255), role varchar(255), PRIMARY KEY(id));
