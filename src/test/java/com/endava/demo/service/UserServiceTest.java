@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -54,18 +55,27 @@ public class UserServiceTest {
     UserServiceImpl mockUserServiceImpl;
 
     @Test
+    public void noAuthorizedWhenNotProvidedSecurityRole() throws Exception {
+        when(this.mockUserServiceImpl.find(any())).thenReturn(Optional.empty());
+        this.mockMvc.perform(get(pathFind + this.loginName)).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser
     public void noContentWhenDontFindUser() throws Exception {
         when(this.mockUserServiceImpl.find(any())).thenReturn(Optional.empty());
         this.mockMvc.perform(get(pathFind + this.loginName)).andExpect(status().isNoContent());
     }
 
     @Test
+    @WithMockUser
     public void okWhenFindUser() throws Exception {
         when(this.mockUserServiceImpl.find(this.loginName)).thenReturn(Optional.ofNullable(this.userDto));
         this.mockMvc.perform(get(pathFind + this.loginName)).andExpect(status().isOk());
     }
 
     @Test
+    @WithMockUser
     public void okWhenFindUserAndDelete() throws Exception {
         assertTrue(set.contains(this.loginName));
         this.mockMvc.perform(delete(pathDelete + this.loginName)
@@ -76,6 +86,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @WithMockUser
     public void okWhenCreateUser() throws Exception {
         when(this.mockUserServiceImpl.createOrUpdate(this.userDto)).thenReturn(this.userDto);
         this.mockMvc.perform(put(this.pathCreateOrUpdate).content(mapper.writeValueAsBytes(this.userDto))
@@ -87,6 +98,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @WithMockUser
     public void okWhenUpdateUser() throws Exception {
         UserDto userDto2 = UserDto.builder()
                 .loginName(this.loginName)

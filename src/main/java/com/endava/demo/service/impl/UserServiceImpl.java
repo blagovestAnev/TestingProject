@@ -1,5 +1,6 @@
 package com.endava.demo.service.impl;
 
+import com.endava.demo.controller.UserController;
 import com.endava.demo.dto.UserDto;
 import com.endava.demo.entity.User;
 import com.endava.demo.mapper.UserMapper;
@@ -8,6 +9,7 @@ import com.endava.demo.service.EmailService;
 import com.endava.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
@@ -56,7 +58,7 @@ public class UserServiceImpl implements UserService {
     public void delete(String loginName) {
         final Optional<User> user = this.userRepository.findById(loginName);
         if (!user.isPresent()) {
-            throw new IllegalArgumentException("There is no user with this id.");
+            throw new IllegalArgumentException("There is no user with this login name.");
         }
         this.emailService.sendSimpleMessageDelete(user.map(User::getEmail).orElse(null));
         this.userRepository.deleteById(loginName);
