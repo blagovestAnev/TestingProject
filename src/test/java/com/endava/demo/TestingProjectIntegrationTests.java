@@ -24,7 +24,6 @@ public class TestingProjectIntegrationTests {
     private ResponseEntity entity;
     private String loginName = "testUser";
     private String password = "pass1234";
-
     private UserDto userDto = UserDto.builder()
             .loginName(this.loginName)
             .password(this.password)

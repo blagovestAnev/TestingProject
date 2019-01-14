@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .authorizeRequests()
                 .antMatchers("/user/delete/*", "user/find/*").hasRole("USER")
-                .antMatchers("/user/**").hasRole("ADMIN")
+                .antMatchers("/user/").hasRole("ADMIN")
                 .anyRequest()
                 .fullyAuthenticated()
                 .and()
