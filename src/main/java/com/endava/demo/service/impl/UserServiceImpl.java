@@ -1,6 +1,5 @@
 package com.endava.demo.service.impl;
 
-import com.endava.demo.controller.UserController;
 import com.endava.demo.dto.UserDto;
 import com.endava.demo.entity.User;
 import com.endava.demo.mapper.UserMapper;
@@ -9,7 +8,6 @@ import com.endava.demo.service.EmailService;
 import com.endava.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
