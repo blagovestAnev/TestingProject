@@ -55,15 +55,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(String loginName) {
         final Optional<User> user = this.userRepository.findById(loginName);
-        if (!user.isPresent()) {
-            throw new IllegalArgumentException("There is no user with this login name.");
-        }
-        this.emailService.sendSimpleMessageDelete(user.map(User::getEmail).orElse(null));
+        this.emailService.sendSimpleMessageCreate(user.map(User::getEmail).orElseThrow(()->new IllegalArgumentException("There is no user with this login name.")));
         this.userRepository.deleteById(loginName);
     }
 
     /**
      * Finds the next id number in the database.
+     *
      * Returns the next number in the database from the user table, checking for any user existence. It finds the
      * highest user id number and adds 1 to his number to get the next available. If don't find any user, returns just
      * 1, which means that the database is empty and this user will be the first one.
@@ -79,6 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * Finds random number.
      * Returns random number between minimum (can't be less than 4, because of salt specifications) and maximum
      * (can't be higher than 31, because of salt specifications - recommended until 20,
      * because password comparison becomes too slow), used for the salt in BCrypt.

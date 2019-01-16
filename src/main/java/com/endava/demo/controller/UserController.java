@@ -81,7 +81,6 @@ public class UserController {
         if(getRandomNumber() == 5) {
             Thread.sleep(3000);
         }
-
         return this.userService.find(loginName).map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
     }
 

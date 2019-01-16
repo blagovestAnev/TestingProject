@@ -1,6 +1,5 @@
 package com.endava.demo.service;
 
-import com.endava.demo.config.TestContext;
 import com.endava.demo.controller.UserController;
 import com.endava.demo.dto.UserDto;
 import com.endava.demo.service.impl.UserServiceImpl;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
