@@ -38,7 +38,7 @@ public class UserController {
      * all the provided from the request info, also with encrypted password and salt number, together with response
      * code.
      *
-     * @param userDto
+     * @param userDto summarized provided json information for the object to work with
      * @return ResponseEntity with the body of the returned successful create or update method
      */
     @ApiOperation(value = "Updates \"user\" information based on \"login name\" and \"password\". If such don't exist, the app will create a new one.")
