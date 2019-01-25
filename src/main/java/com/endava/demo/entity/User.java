@@ -1,16 +1,19 @@
 package com.endava.demo.entity;
 
 import lombok.Data;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Data
 @Entity
+@Audited
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
 
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
